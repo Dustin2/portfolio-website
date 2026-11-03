@@ -13,6 +13,8 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#07090f; } }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
+  /* clip (not hidden) keeps the sticky nav working while the glow can bleed past the content width. */
+  html, body { overflow-x:clip; }
   body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 Geist, system-ui, sans-serif; }
   a { color:inherit; }
   .wrap { max-width:1100px; margin:0 auto; padding:0 16px; }
@@ -28,9 +30,14 @@
   .lang span { padding:3px 10px; border-radius:999px; }
   html[lang="en"] .lang [data-l="en"], html[lang="es"] .lang [data-l="es"] { background:var(--accent); color:var(--bg); font-weight:600; }
 
-  .hero { min-height:calc(100svh - 64px); display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
-  .hero::before { content:""; position:absolute; width:600px; height:600px; right:-150px; top:10%; border-radius:50%;
-    background:radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 65%); filter:blur(40px); z-index:-1; }
+  .hero { min-height:calc(100svh - 64px); display:flex; flex-direction:column; justify-content:center; position:relative; }
+  /* Glow sits right by default; JS moves it with the mouse via --mx/--my. */
+  .hero { --mx:80%; --my:40%; }
+  .hero::before { content:""; position:absolute; width:600px; height:600px; left:var(--mx); top:var(--my); transform:translate(-50%,-50%); border-radius:50%;
+    background:radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 70%); z-index:-1; transition:left .4s ease-out, top .4s ease-out; }
+  .typed { font-size:clamp(1.4rem, 4vw, 2.6rem); font-weight:600; color:var(--accent); margin:20px 0 0; min-height:1.3em; }
+  .caret { display:inline-block; width:3px; height:1em; background:var(--accent); margin-left:4px; vertical-align:-.12em; animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
   .hero p.hi { color:var(--accent); margin:0 0 8px; font-weight:500; }
   .hero h1 { font-size:clamp(3rem, 10vw, 7.5rem); line-height:.95; margin:0; font-weight:800; letter-spacing:-.03em; }
   .hero h1 span { color:var(--accent); }
@@ -47,17 +54,21 @@
 
   .grid2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; }
   .box { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:32px; transition:border-color .3s; }
+  /* Spotlight that follows the mouse inside each card (--x/--y set by JS). */
+  .box { background:radial-gradient(400px circle at var(--x, -999px) var(--y, -999px), color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%), var(--card); }
   .box:hover { border-color:var(--accent); }
   .box h3 { margin:0 0 12px; font-size:1.5rem; }
   .box p { color:var(--muted); margin:0 0 16px; }
   .tags { display:flex; flex-wrap:wrap; gap:6px; }
   .tags span { font-size:.8rem; border:1px solid var(--line); border-radius:999px; padding:3px 12px; color:var(--accent); }
 
-  .timeline { border-left:2px solid var(--line); margin-left:6px; }
+  /* --p (0..1) is the scroll progress, set by JS; it fills the line in blue. */
+  .timeline { border-left:2px solid var(--line); margin-left:6px; position:relative; --p:0; }
+  .timeline::after { content:""; position:absolute; left:-2px; top:0; width:2px; height:calc(var(--p) * 100%); background:var(--accent); box-shadow:0 0 8px var(--accent); }
   .job { position:relative; padding:0 0 40px 32px; }
   .job:last-child { padding-bottom:0; }
-  .job::before { content:""; position:absolute; left:-8px; top:6px; width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); }
-  .job:first-child::before { background:var(--accent); box-shadow:0 0 16px var(--accent); }
+  .job::before { content:""; position:absolute; left:-8px; top:6px; width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--line); z-index:1; transition:all .4s; }
+  .job.lit::before { background:var(--accent); border-color:var(--accent); box-shadow:0 0 16px var(--accent); }
   .job .when { color:var(--accent); font-size:.9rem; font-weight:500; }
   .job h3 { margin:2px 0 0; font-size:1.3rem; }
   .job .where { color:var(--muted); margin:0 0 8px; }
@@ -77,9 +88,20 @@
   @media (max-width:600px) { .work { grid-template-columns:1fr; gap:8px; } }
 
   .stack { display:flex; flex-wrap:wrap; gap:12px; }
-  .stack span { font-size:clamp(1rem, 2vw, 1.25rem); padding:12px 22px; border:1px solid var(--line); border-radius:999px; background:var(--card); }
+  .stack span { font-size:clamp(1rem, 2vw, 1.25rem); padding:12px 22px; border:1px solid var(--line); border-radius:999px; background:var(--card); white-space:nowrap; }
+  /* Marquee: JS duplicates the list once, the track slides by half its width and loops. */
+  @media (prefers-reduced-motion:no-preference) {
+    .marquee { overflow:hidden; -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+    .marquee .stack { flex-wrap:nowrap; width:max-content; animation:slide 40s linear infinite; }
+    .marquee:hover .stack { animation-play-state:paused; }
+    @keyframes slide { to { transform:translateX(calc(-50% - 6px)); } }
+  }
 
-  .contact a.mail { font-size:clamp(1.5rem, 5vw, 3.5rem); font-weight:700; color:var(--accent); text-decoration:none; word-break:break-all; }
+  .contact .mail { font:inherit; font-size:clamp(1.5rem, 5vw, 3.5rem); font-weight:700; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-align:left; word-break:break-all; }
+  .contact .mail:hover { text-decoration:underline; text-underline-offset:6px; }
+  .contact .hint { color:var(--muted); font-size:.9rem; margin:8px 0 0; }
+  .toast { position:fixed; left:50%; bottom:24px; transform:translate(-50%, 80px); background:var(--accent); color:var(--bg); font-weight:600; padding:10px 20px; border-radius:999px; opacity:0; transition:all .3s; pointer-events:none; z-index:20; }
+  .toast.show { transform:translate(-50%, 0); opacity:1; }
   .contact .social { display:flex; gap:24px; margin-top:32px; color:var(--muted); }
   footer { padding:32px 0; color:var(--muted); font-size:.85rem; border-top:1px solid var(--line); }
 
@@ -108,7 +130,8 @@
   <header class="hero wrap">
     <p class="hi" data-es="Hola, soy">Hi, I'm</p>
     <h1>Dustin<br>Gallardo<span>.</span></h1>
-    <p class="role" data-es="Desarrollador full stack: aplicaciones web con React, Next.js y Laravel, y apps móviles con React Native y Kotlin.">Full stack developer building web apps with React, Next.js &amp; Laravel, and mobile apps with React Native and Kotlin.</p>
+    <p class="typed" aria-hidden="true"><span id="typed"></span><span class="caret"></span></p>
+    <p class="role" data-es="Construyo aplicaciones web con React, Next.js y Laravel, y apps móviles con React Native y Kotlin.">Building web apps with React, Next.js &amp; Laravel, and mobile apps with React Native and Kotlin.</p>
     <div class="cta">
       <a class="btn primary" href="#work" data-es="Ver mis proyectos">See my work</a>
       <a class="btn" href="#contact" data-es="Contáctame">Contact me</a>    </div>
@@ -237,20 +260,22 @@
 
   <section id="stack"><div class="wrap reveal">
     <h2 data-es="Tecnologías">Tech <span>stack</span></h2>
-    <div class="stack">
+    <div class="marquee"><div class="stack">
       <span>React</span><span>Next.js</span><span>TypeScript</span><span>JavaScript</span><span>TanStack</span><span>Ant Design</span>
       <span>PHP</span><span>Laravel</span><span>REST APIs</span><span>JWT</span><span>PostgreSQL</span><span>SQL Server</span>
       <span>React Native</span><span>Expo</span><span>Kotlin</span><span>Jetpack Compose</span>
       <span>Git</span><span>GitHub Actions</span><span>Docker</span><span>pnpm</span>
-    </div>
+    </div></div>
   </div></section>
 
   <section id="contact" class="contact"><div class="wrap reveal">
     <h2 data-es="Hablemos<span>.</span>">Let's <span>talk</span></h2>
-    <a class="mail" href="mailto:dustin2.dev@gmail.com">dustin2.dev@gmail.com</a>
-    <div class="social"><a href="https://github.com/Dustin2">GitHub</a></div>
+    <button class="mail" type="button">dustin2.dev@gmail.com</button>
+    <p class="hint" data-es="Haz clic para copiar">Click to copy</p>
+    <div class="social"><a href="mailto:dustin2.dev@gmail.com" data-es="Enviar correo →">Send email →</a><a href="https://github.com/Dustin2">GitHub</a></div>
   </div></section>
 </main>
+<div class="toast" role="status" aria-live="polite"></div>
 
 <footer><div class="wrap" data-es="Diseñado y desarrollado por Dustin Gallardo · 2026">Designed &amp; built by Dustin Gallardo · 2026</div></footer>
 
@@ -271,6 +296,74 @@
   const start = new URLSearchParams(location.search).get('lang') || saved || (navigator.language.startsWith('es') ? 'es' : 'en');
   setLang(start === 'es' ? 'es' : 'en');
   document.querySelector('.lang').onclick = () => setLang(document.documentElement.lang === 'es' ? 'en' : 'es');
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isEs = () => document.documentElement.lang === 'es';
+
+  // Mouse light: hero glow follows the cursor, cards get a spotlight. Mouse only, not touch.
+  if (matchMedia('(pointer: fine)').matches && !reduced) {
+    const hero = document.querySelector('.hero');
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    document.querySelectorAll('.box').forEach(box => box.addEventListener('pointermove', e => {
+      const r = box.getBoundingClientRect();
+      box.style.setProperty('--x', (e.clientX - r.left) + 'px');
+      box.style.setProperty('--y', (e.clientY - r.top) + 'px');
+    }));
+  }
+
+  // Typed role under the name; with reduced motion it just shows the first phrase.
+  const phrases = {
+    en: ['Full Stack Developer', 'React & Next.js', 'APIs with Laravel', 'Android with Kotlin', 'On-device AI'],
+    es: ['Desarrollador Full Stack', 'React y Next.js', 'APIs con Laravel', 'Android con Kotlin', 'IA en el dispositivo'],
+  };
+  const typed = document.getElementById('typed');
+  if (reduced) {
+    typed.textContent = phrases[isEs() ? 'es' : 'en'][0];
+    document.querySelector('.lang').addEventListener('click', () => typed.textContent = phrases[isEs() ? 'es' : 'en'][0]);
+  } else {
+    let i = 0, n = 0, deleting = false;
+    (function tick() {
+      const list = phrases[isEs() ? 'es' : 'en'], word = list[i % list.length];
+      n += deleting ? -1 : 1;
+      typed.textContent = word.slice(0, n);
+      let wait = deleting ? 40 : 90;
+      if (!deleting && n >= word.length) { deleting = true; wait = 1600; }
+      else if (deleting && n <= 0) { deleting = false; i++; wait = 300; }
+      setTimeout(tick, wait);
+    })();
+  }
+
+  // Timeline: the line fills as the middle of the screen passes it, and each dot lights up.
+  const timeline = document.querySelector('.timeline'), jobs = timeline.querySelectorAll('.job');
+  function fillTimeline() {
+    const mid = innerHeight / 2, r = timeline.getBoundingClientRect();
+    timeline.style.setProperty('--p', Math.min(1, Math.max(0, (mid - r.top) / r.height)));
+    jobs.forEach(j => j.classList.toggle('lit', j.getBoundingClientRect().top + 12 < mid));
+  }
+  addEventListener('scroll', fillTimeline, { passive: true });
+  addEventListener('resize', fillTimeline);
+  fillTimeline();
+
+  // Marquee needs the list twice to loop without a gap; the copy is hidden from screen readers.
+  if (!reduced) {
+    const stack = document.querySelector('.marquee .stack');
+    [...stack.children].forEach(s => { const c = s.cloneNode(true); c.setAttribute('aria-hidden', 'true'); stack.append(c); });
+  }
+
+  // Copy email; if the clipboard is blocked, open the mail app instead.
+  const toast = document.querySelector('.toast');
+  document.querySelector('.contact .mail').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText('dustin2.dev@gmail.com');
+      toast.textContent = isEs() ? '¡Correo copiado!' : 'Email copied!';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    } catch { location.href = 'mailto:dustin2.dev@gmail.com'; }
+  };
 </script>
 </body>
 </html>
