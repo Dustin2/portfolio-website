@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dustin Gallardo — Full Stack Developer</title>
+<meta name="description" content="Portfolio of Dustin Gallardo: full stack developer (React, Next.js, TypeScript, Laravel) and mobile apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  /* Dark-only on purpose, like the reference design. */
+  :root { --bg:#07090f; --fg:#e6ebf5; --muted:#8b95a8; --line:#1a2133; --card:#0d1220; --accent:#5b9dff; color-scheme:dark; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#07090f; } }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 Geist, system-ui, sans-serif; }
+  a { color:inherit; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 16px; }
+
+  nav { position:sticky; top:0; z-index:10; background:color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter:blur(10px); }
+  nav .wrap { display:flex; justify-content:space-between; align-items:center; height:64px; gap:16px; }
+  nav b { font-weight:700; letter-spacing:.02em; }
+  nav ul { display:flex; gap:24px; list-style:none; margin:0 0 0 auto; padding:0; font-size:.9rem; }
+  nav ul a { text-decoration:none; color:var(--muted); }
+  nav ul a:hover { color:var(--accent); }
+  @media (max-width:700px) { nav ul { display:none; } }
+  .lang { display:flex; border:1px solid var(--line); border-radius:999px; padding:3px; font:inherit; font-size:.8rem; background:none; color:var(--muted); cursor:pointer; }
+  .lang span { padding:3px 10px; border-radius:999px; }
+  html[lang="en"] .lang [data-l="en"], html[lang="es"] .lang [data-l="es"] { background:var(--accent); color:var(--bg); font-weight:600; }
+
+  .hero { min-height:calc(100svh - 64px); display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
+  .hero::before { content:""; position:absolute; width:600px; height:600px; right:-150px; top:10%; border-radius:50%;
+    background:radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 65%); filter:blur(40px); z-index:-1; }
+  .hero p.hi { color:var(--accent); margin:0 0 8px; font-weight:500; }
+  .hero h1 { font-size:clamp(3rem, 10vw, 7.5rem); line-height:.95; margin:0; font-weight:800; letter-spacing:-.03em; }
+  .hero h1 span { color:var(--accent); }
+  .hero .role { font-size:clamp(1.2rem, 3vw, 2rem); color:var(--muted); margin:24px 0 0; font-weight:300; max-width:680px; }
+  .cta { display:flex; gap:12px; flex-wrap:wrap; margin-top:40px; }
+  .btn { padding:14px 28px; border-radius:999px; text-decoration:none; font-weight:600; border:1px solid var(--accent); }
+  .btn.primary { background:var(--accent); color:var(--bg); }
+  .btn:hover { opacity:.85; }
+
+  section { padding:96px 0; border-top:1px solid var(--line); }
+  h2 { font-size:clamp(2rem, 5vw, 3.5rem); margin:0 0 48px; letter-spacing:-.02em; font-weight:700; }
+  h2 span { color:var(--accent); }
+  .about p { font-size:clamp(1.2rem, 2.5vw, 1.6rem); font-weight:300; max-width:820px; margin:0; }
+
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; }
+  .box { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:32px; transition:border-color .3s; }
+  .box:hover { border-color:var(--accent); }
+  .box h3 { margin:0 0 12px; font-size:1.5rem; }
+  .box p { color:var(--muted); margin:0 0 16px; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .tags span { font-size:.8rem; border:1px solid var(--line); border-radius:999px; padding:3px 12px; color:var(--accent); }
+
+  .timeline { border-left:2px solid var(--line); margin-left:6px; }
+  .job { position:relative; padding:0 0 40px 32px; }
+  .job:last-child { padding-bottom:0; }
+  .job::before { content:""; position:absolute; left:-8px; top:6px; width:14px; height:14px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); }
+  .job:first-child::before { background:var(--accent); box-shadow:0 0 16px var(--accent); }
+  .job .when { color:var(--accent); font-size:.9rem; font-weight:500; }
+  .job h3 { margin:2px 0 0; font-size:1.3rem; }
+  .job .where { color:var(--muted); margin:0 0 8px; }
+  .job ul { margin:0; padding-left:20px; color:var(--muted); }
+  .edu { margin-top:48px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
+  .edu .box h3 { font-size:1.1rem; margin:0 0 4px; }
+  .edu .box p { margin:0; }
+
+  .work { display:grid; grid-template-columns:80px 1fr; gap:24px; padding:40px 0; border-bottom:1px solid var(--line); }
+  .work:last-child { border-bottom:0; }
+  .work .num { font-size:2.5rem; font-weight:800; color:var(--accent); line-height:1; }
+  .work h3 { font-size:clamp(1.6rem, 4vw, 2.4rem); margin:0; letter-spacing:-.01em; }
+  .work .kind { color:var(--muted); margin:4px 0 16px; }
+  .work ul { margin:0 0 16px; padding-left:20px; color:var(--muted); }
+  .work li { margin-bottom:6px; }
+  .work a.link { color:var(--accent); font-weight:600; text-decoration:none; }
+  @media (max-width:600px) { .work { grid-template-columns:1fr; gap:8px; } }
+
+  .stack { display:flex; flex-wrap:wrap; gap:12px; }
+  .stack span { font-size:clamp(1rem, 2vw, 1.25rem); padding:12px 22px; border:1px solid var(--line); border-radius:999px; background:var(--card); }
+
+  .contact a.mail { font-size:clamp(1.5rem, 5vw, 3.5rem); font-weight:700; color:var(--accent); text-decoration:none; word-break:break-all; }
+  .contact .social { display:flex; gap:24px; margin-top:32px; color:var(--muted); }
+  footer { padding:32px 0; color:var(--muted); font-size:.85rem; border-top:1px solid var(--line); }
+
+  /* Fade-in on scroll; skipped for reduced motion. */
+  @media (prefers-reduced-motion:no-preference) {
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .8s, transform .8s; }
+    .reveal.in { opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+<!-- Translations: English is the text in the page, Spanish lives in data-es on the same element. -->
+<nav><div class="wrap">
+  <b>DG<span style="color:var(--accent)">.</span></b>
+  <ul>
+    <li><a href="#about" data-es="Sobre mí">About</a></li>
+    <li><a href="#what" data-es="Qué hago">What I do</a></li>
+    <li><a href="#career" data-es="Trayectoria">Career</a></li>
+    <li><a href="#work" data-es="Proyectos">Work</a></li>
+    <li><a href="#contact" data-es="Contacto">Contact</a></li>
+  </ul>
+  <button class="lang" type="button" aria-label="Cambiar idioma / Change language"><span data-l="en">EN</span><span data-l="es">ES</span></button>
+</div></nav>
+
+<main>
+  <header class="hero wrap">
+    <p class="hi" data-es="Hola, soy">Hi, I'm</p>
+    <h1>Dustin<br>Gallardo<span>.</span></h1>
+    <p class="role" data-es="Desarrollador full stack: aplicaciones web con React, Next.js y Laravel, y apps móviles con React Native y Kotlin.">Full stack developer building web apps with React, Next.js &amp; Laravel, and mobile apps with React Native and Kotlin.</p>
+    <div class="cta">
+      <a class="btn primary" href="#work" data-es="Ver mis proyectos">See my work</a>
+      <a class="btn" href="#contact" data-es="Contáctame">Contact me</a>    </div>
+  </header>
+
+  <section id="about" class="about"><div class="wrap reveal">
+    <h2 data-es="Sobre <span>mí</span>">About <span>me</span></h2>
+    <p data-es="Construyo software de principio a fin: requerimientos, bases de datos, APIs, interfaces y despliegue. He liderado proyectos y me gusta mantener las cosas simples. Cuando no sé algo, lo aprendo construyendo algo real: así pasé de la web a Android nativo, IA incluida.">I build software end to end: requirements, databases, APIs, interfaces and deployment. I've led projects and I like keeping things simple. When I don't know something, I learn it by building something real: that's how I went from web to native Android, AI included.</p>
+    <p style="margin-top:32px; font-size:1rem; color:var(--muted)"><span style="color:var(--accent); font-weight:600" data-es="Ahora estoy aprendiendo:">Currently learning:</span> <span data-es="IA en el dispositivo para Android · Kotlin y Jetpack Compose · Linux">on-device AI for Android · Kotlin &amp; Jetpack Compose · Linux</span></p>
+  </div></section>
+
+  <section id="what"><div class="wrap reveal">
+    <h2 data-es="Qué <span>hago</span>">What I <span>do</span></h2>
+    <div class="grid2">
+      <div class="box">
+        <h3>Frontend</h3>
+        <p data-es="Interfaces web con React y Next.js en TypeScript, con manejo de datos, rutas y librerías de componentes.">Web interfaces with React and Next.js in TypeScript, with data fetching, routing and component libraries.</p>
+        <div class="tags"><span>React</span><span>Next.js</span><span>TypeScript</span><span>TanStack Query</span><span>TanStack Router</span><span>Ant Design</span></div>
+      </div>
+      <div class="box">
+        <h3 data-es="Backend y datos">Backend &amp; data</h3>
+        <p data-es="APIs REST y lógica de negocio en Laravel, modelado y normalización de bases de datos, entornos en contenedores y CI/CD.">REST APIs and business logic in Laravel, database modeling and normalization, containerized environments and CI/CD.</p>
+        <div class="tags"><span>Laravel</span><span>PHP</span><span>PostgreSQL</span><span>SQL Server</span><span>Docker</span><span>GitHub Actions</span></div>
+      </div>
+      <div class="box">
+        <h3>Mobile</h3>
+        <p data-es="Apps multiplataforma con React Native y Expo, y apps nativas de Android con Kotlin y Jetpack Compose.">Cross-platform apps with React Native and Expo, and native Android apps with Kotlin and Jetpack Compose.</p>
+        <div class="tags"><span>React Native</span><span>Expo</span><span>Kotlin</span><span>Jetpack Compose</span><span>Room</span></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="career"><div class="wrap reveal">
+    <h2 data-es="Mi <span>trayectoria</span>">My <span>career</span></h2>
+    <div class="timeline">
+      <div class="job">
+        <div class="when" data-es="Dic 2024 – May 2026">Dec 2024 – May 2026</div>
+        <h3 data-es="Desarrollador Full Stack">Full Stack Developer</h3>
+        <p class="where">Grupo Tecnológico Alfa PCS Max</p>
+        <ul>
+          <li data-es="Desarrollo y mantenimiento de aplicaciones full stack con Laravel, SQL Server, Next.js y TypeScript en todo el ciclo: requerimientos, planeación, implementación y mantenimiento.">Built and maintained full stack apps with Laravel, SQL Server, Next.js and TypeScript, across the whole cycle: requirements, planning, implementation and maintenance.</li>
+          <li data-es="Diseño y normalización de bases de datos; APIs en Laravel e interfaces web con Next.js, TanStack y Ant Design.">Designed and normalized databases; built APIs in Laravel and web interfaces with Next.js, TanStack and Ant Design.</li>
+          <li data-es="Liderazgo de proyectos: a cargo de la planeación, el seguimiento y la entrega, coordinando frontend, backend, base de datos y requerimientos.">Led projects: in charge of planning, tracking and delivery, coordinating frontend, backend, database and requirements.</li>
+          <li data-es="Análisis de problemas técnicos y de negocio, y búsqueda, propuesta e implementación de soluciones.">Analyzed technical and business problems, then found, proposed and implemented solutions.</li>
+          <li data-es="Automatización de despliegues a QA y producción con GitHub Actions.">Automated QA and production deployments with GitHub Actions.</li>
+          <li data-es="Inicié en el equipo móvil con React Native y Expo.">Started on the mobile team with React Native and Expo.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="when" data-es="Dic 2022 – Dic 2024">Dec 2022 – Dec 2024</div>
+        <h3 data-es="Desarrollador Mobile">Mobile Developer</h3>
+        <p class="where">Freelance</p>
+        <ul><li data-es="Apps con React Native y Expo para necesidades de clientes, incluyendo inventarios y control de información.">React Native and Expo apps for client needs, including inventory and information control features.</li></ul>
+      </div>
+      <div class="job">
+        <div class="when" data-es="Jun 2022 – Dic 2022">Jun 2022 – Dec 2022</div>
+        <h3 data-es="Analista de Datos / Desarrollador">Data Analyst / Developer</h3>
+        <p class="where">ForeverH3</p>
+        <ul><li data-es="Herramientas internas de inventario; análisis de ventas y reportes para identificar los mejores productos y apoyar decisiones comerciales.">Internal inventory tools; sales analysis and reports to find top products and support business decisions.</li></ul>
+      </div>
+      <div class="job">
+        <div class="when" data-es="Ene 2020 – Ene 2021">Jan 2020 – Jan 2021</div>
+        <h3 data-es="Desarrollador Web">Web Developer</h3>
+        <p class="where" data-es="Unidad Estatal de Protección Civil, Colima">State Civil Protection Unit, Colima</p>
+        <ul><li data-es="Aplicación interna de inventarios con React; apoyo en sistemas internos, bases de datos y servidores.">Internal inventory app with React; support on internal systems, databases and servers.</li></ul>
+      </div>
+      <div class="job">
+        <div class="when">Jun 2017 – Jun 2018</div>
+        <h3 data-es="Desarrollador Web (prácticas profesionales)">Web Developer Intern</h3>
+        <p class="where">DIF Estatal Colima</p>
+        <ul><li data-es="Páginas y herramientas web con HTML, CSS, JavaScript y PHP.">Web pages and tools with HTML, CSS, JavaScript and PHP.</li></ul>
+      </div>
+    </div>
+    <div class="edu">
+      <div class="box"><h3 data-es="Ingeniería en Sistemas Computacionales">Computer Systems Engineering</h3><p data-es="Instituto Tecnológico de Colima · 2018 – 2021 (hasta 6.º semestre)">Instituto Tecnológico de Colima · 2018 – 2021 (6 semesters)</p></div>
+      <div class="box"><h3 data-es="Técnico Programador">Programming Technician</h3><p>CBTIS 19 · 2015 – 2018</p></div>
+    </div>
+  </div></section>
+
+  <section id="work"><div class="wrap">
+    <h2 class="reveal" data-es="Proyectos <span>destacados</span>">Selected <span>work</span></h2>
+
+    <article class="work reveal">
+      <div class="num">01</div>
+      <div>
+        <h3>Pro-Hielo ERP</h3>
+        <p class="kind" data-es="Sistema de gestión empresarial · web + móvil">Business management system · web + mobile</p>
+        <ul>
+          <li data-es="ERP modular para una empresa productora de hielo: producción, inventario, ventas, clientes, rutas y empleados.">Modular ERP for an ice production company: production, inventory, sales, customers, routes and employees.</li>
+          <li data-es="Monorepo con app web en React/TypeScript, API REST en Laravel con autenticación JWT y respuestas estandarizadas, y app móvil con Expo sobre la misma API.">Monorepo with a React/TypeScript web app, a Laravel REST API with JWT auth and standardized responses, and an Expo mobile app on the same API.</li>
+          <li data-es="Acceso por roles, movimientos de inventario con correcciones, historial de precios por cliente y documentos imprimibles desde el teléfono.">Role-based access, inventory movements with corrections, customer price history, printable documents from the phone.</li>
+          <li data-es="Entorno en contenedores con Docker Compose (PHP-FPM, Nginx, PostgreSQL); flujo de ramas feature/develop/main con pull requests y convenciones documentadas.">Containerized with Docker Compose (PHP-FPM, Nginx, PostgreSQL); feature/develop/main workflow with pull requests and documented conventions.</li>
+        </ul>
+        <div class="tags"><span>React</span><span>TypeScript</span><span>Laravel</span><span>PostgreSQL</span><span>Docker</span><span>JWT</span><span>TanStack</span><span>Expo</span></div>
+      </div>
+    </article>
+
+    <article class="work reveal">
+      <div class="num">02</div>
+      <div>
+        <h3>Jarvis</h3>
+        <p class="kind" data-es="App de organización personal · Android">Personal organization app · Android</p>
+        <ul>
+          <li data-es="Organizador local-first: vista de hoy, bandeja de entrada, tareas recurrentes, proyectos, listas de compras, finanzas, búsqueda, recordatorios y widget de pantalla de inicio.">Local-first organizer: today view, inbox, recurring tasks, projects, shopping lists, finances, search, reminders and a home-screen widget.</li>
+          <li data-es="«Ask Jarvis»: asistente por voz con un modelo de lenguaje que corre en el teléfono (Gemma con LiteRT-LM), sin internet: crea recordatorios, edita tareas, responde sobre gastos y lee un resumen cada mañana.">"Ask Jarvis": a voice assistant powered by a language model running on the phone (Gemma via LiteRT-LM), no internet needed: it creates reminders, edits tasks, answers spending questions and reads a morning brief aloud.</li>
+          <li data-es="Compose → ViewModel (StateFlow) → Repository → Room, con la base de datos como única fuente de verdad.">Compose → ViewModel (StateFlow) → Repository → Room, with the database as single source of truth.</li>
+          <li data-es="Migraciones versionadas, respaldos automáticos diarios y recordatorios exactos; la lógica de recurrencia y planeación tiene pruebas unitarias.">Versioned migrations, daily automatic backups, exact reminders; recurrence and planning logic covered by unit tests.</li>
+        </ul>
+        <div class="tags"><span>Kotlin</span><span>Jetpack Compose</span><span>Material 3 Expressive</span><span>Room</span><span>WorkManager</span><span data-es="IA en el dispositivo">On-device AI</span><span>LiteRT-LM</span></div>
+        <p style="margin:16px 0 0"><a class="link" href="https://github.com/Dustin2/organizer" data-es="Código fuente →">Source code →</a></p>
+      </div>
+    </article>
+
+    <article class="work reveal">
+      <div class="num">03</div>
+      <div>
+        <h3>Música</h3>
+        <p class="kind" data-es="Reproductor de música · Android">Music player · Android</p>
+        <ul>
+          <li data-es="Reproductor offline para las canciones del dispositivo: biblioteca, cola, portadas e historial, con reproducción en segundo plano.">Offline player for the songs on the device: library, queue, artwork and listening history, with background playback.</li>
+        </ul>
+        <div class="tags"><span>Kotlin</span><span>Jetpack Compose</span><span data-es="Reproducción multimedia">Media playback</span></div>
+      </div>
+    </article>
+  </div></section>
+
+  <section id="stack"><div class="wrap reveal">
+    <h2 data-es="Tecnologías">Tech <span>stack</span></h2>
+    <div class="stack">
+      <span>React</span><span>Next.js</span><span>TypeScript</span><span>JavaScript</span><span>TanStack</span><span>Ant Design</span>
+      <span>PHP</span><span>Laravel</span><span>REST APIs</span><span>JWT</span><span>PostgreSQL</span><span>SQL Server</span>
+      <span>React Native</span><span>Expo</span><span>Kotlin</span><span>Jetpack Compose</span>
+      <span>Git</span><span>GitHub Actions</span><span>Docker</span><span>pnpm</span>
+    </div>
+  </div></section>
+
+  <section id="contact" class="contact"><div class="wrap reveal">
+    <h2 data-es="Hablemos<span>.</span>">Let's <span>talk</span></h2>
+    <a class="mail" href="mailto:dustin2.dev@gmail.com">dustin2.dev@gmail.com</a>
+    <div class="social"><a href="https://github.com/Dustin2">GitHub</a></div>
+  </div></section>
+</main>
+
+<footer><div class="wrap" data-es="Diseñado y desarrollado por Dustin Gallardo · 2026">Designed &amp; built by Dustin Gallardo · 2026</div></footer>
+
+<script>
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  const translated = document.querySelectorAll('[data-es]');
+  translated.forEach(el => el.dataset.en = el.innerHTML);
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    translated.forEach(el => el.innerHTML = el.dataset[lang]);
+    try { localStorage.setItem('lang', lang); } catch {}
+  }
+  // ?lang=es in the link wins, then the visitor's last choice, then their browser language.
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch {}
+  const start = new URLSearchParams(location.search).get('lang') || saved || (navigator.language.startsWith('es') ? 'es' : 'en');
+  setLang(start === 'es' ? 'es' : 'en');
+  document.querySelector('.lang').onclick = () => setLang(document.documentElement.lang === 'es' ? 'en' : 'es');
+</script>
+</body>
+</html>
