@@ -84,6 +84,7 @@
   .work .kind { color:var(--muted); margin:4px 0 16px; }
   .work ul { margin:0 0 16px; padding-left:20px; color:var(--muted); }
   .work li { margin-bottom:6px; }
+  .work .shot { display:block; width:100%; max-width:640px; height:auto; border-radius:12px; border:1px solid var(--line); margin:0 0 20px; }
   .work a.link { color:var(--accent); font-weight:600; text-decoration:none; }
   @media (max-width:600px) { .work { grid-template-columns:1fr; gap:8px; } }
 
@@ -248,12 +249,18 @@
     <article class="work reveal">
       <div class="num">03</div>
       <div>
-        <h3>Música</h3>
-        <p class="kind" data-es="Reproductor de música · Android">Music player · Android</p>
+        <h3>DockClock</h3>
+        <p class="kind" data-es="Reloj de escritorio · Android">Desk clock · Android</p>
+        <img class="shot" src="assets/dockclock.png" width="983" height="452" loading="lazy" alt="DockClock: a large clock in landscape with a notification next to it">
         <ul>
-          <li data-es="Reproductor offline para las canciones del dispositivo: biblioteca, cola, portadas e historial, con reproducción en segundo plano.">Offline player for the songs on the device: library, queue, artwork and listening history, with background playback.</li>
+          <li data-es="Convierte un teléfono cargando en un reloj de escritorio siempre encendido con tus notificaciones recientes; funciona como protector de pantalla en vertical y horizontal.">Turns a charging phone into an always-on desk clock with your recent notifications, as a screen saver in portrait and landscape.</li>
+          <li data-es="Privacidad: las notificaciones se leen solo en el dispositivo; eliges qué apps aparecen y puedes ocultar su contenido.">Privacy first: notifications are read on the device only; you choose which apps appear and can hide their content.</li>
+          <li data-es="Modo nocturno que atenúa el reloj de 22:00 a 07:00 y protección contra quemado de pantallas OLED que mueve el contenido cada minuto.">Night mode that dims the clock from 22:00 to 07:00, and OLED burn-in protection that shifts the content every minute.</li>
+          <li data-es="Una sola pantalla de reloj en dos contenedores: la misma pantalla de Compose corre en una Activity y en un DreamService, que provee su propio ciclo de vida y ViewModel.">One clock screen, two hosts: the same Compose screen runs in an Activity and in a DreamService, which provides its own lifecycle and ViewModel store.</li>
+          <li data-es="APIs de Android detrás de interfaces para pruebas unitarias en la JVM; CI en GitHub Actions con ktlint, detekt y pruebas.">Android APIs behind interfaces so the logic is unit tested on the JVM; CI on GitHub Actions with ktlint, detekt and tests.</li>
         </ul>
-        <div class="tags"><span>Kotlin</span><span>Jetpack Compose</span><span data-es="Reproducción multimedia">Media playback</span></div>
+        <div class="tags"><span>Kotlin</span><span>Jetpack Compose</span><span>Material 3</span><span>Hilt</span><span>DataStore</span><span>Navigation 3</span><span>DreamService</span><span>GitHub Actions</span></div>
+        <p style="margin:16px 0 0"><a class="link" href="https://github.com/Dustin2/dock-clock" data-es="Código fuente →">Source code →</a></p>
       </div>
     </article>
   </div></section>
