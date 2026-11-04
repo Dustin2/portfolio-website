@@ -86,6 +86,10 @@
   .work li { margin-bottom:6px; }
   .work .shot { display:block; width:100%; max-width:640px; height:auto; border-radius:12px; border:1px solid var(--line); margin:0 0 20px; }
   .work a.link { color:var(--accent); font-weight:600; text-decoration:none; }
+  /* Phone screenshots: three in a row, swipeable on narrow screens. */
+  .work > div { min-width:0; } /* let the swipeable row scroll instead of widening the grid column */
+  .phones { display:flex; gap:12px; margin:0 0 20px; overflow-x:auto; scroll-snap-type:x mandatory; }
+  .phones img { width:min(200px, 60vw); height:auto; flex:none; border-radius:16px; border:1px solid var(--line); scroll-snap-align:start; }
   @media (max-width:600px) { .work { grid-template-columns:1fr; gap:8px; } }
 
   .stack { display:flex; flex-wrap:wrap; gap:12px; }
@@ -235,6 +239,11 @@
       <div>
         <h3>Jarvis</h3>
         <p class="kind" data-es="App de organización personal · Android">Personal organization app · Android</p>
+        <div class="phones">
+          <img src="assets/jarvis-today.webp" width="540" height="1170" loading="lazy" alt="Jarvis My day screen: progress, next step and today's tasks">
+          <img src="assets/jarvis-ask.webp" width="540" height="1170" loading="lazy" alt="Ask Jarvis answering what is due today with the on-device model">
+          <img src="assets/jarvis-money.webp" width="540" height="1170" loading="lazy" alt="Jarvis Money screen: monthly balance and spending by category">
+        </div>
         <ul>
           <li data-es="Organizador local-first: vista de hoy, bandeja de entrada, tareas recurrentes, proyectos, listas de compras, finanzas, búsqueda, recordatorios y widget de pantalla de inicio.">Local-first organizer: today view, inbox, recurring tasks, projects, shopping lists, finances, search, reminders and a home-screen widget.</li>
           <li data-es="«Ask Jarvis»: asistente por voz con un modelo de lenguaje que corre en el teléfono (Gemma con LiteRT-LM), sin internet: crea recordatorios, edita tareas, responde sobre gastos y lee un resumen cada mañana.">"Ask Jarvis": a voice assistant powered by a language model running on the phone (Gemma via LiteRT-LM), no internet needed: it creates reminders, edits tasks, answers spending questions and reads a morning brief aloud.</li>
