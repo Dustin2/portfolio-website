@@ -4,13 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dustin Gallardo — Full Stack Developer</title>
-<meta name="description" content="Portfolio of Dustin Gallardo: full stack developer (React, Next.js, TypeScript, Laravel) and mobile apps.">
+<meta name="description" content="Dustin Gallardo, full stack developer: from business requirements and database design to APIs, web and mobile apps, and deployment.">
+<link rel="canonical" href="https://dustin2.github.io/portfolio-website/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#07090f">
+<!-- Link previews (LinkedIn, WhatsApp, Slack, X). Image URLs must be absolute. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dustin2.github.io/portfolio-website/">
+<meta property="og:title" content="Dustin Gallardo — Full Stack Developer">
+<meta property="og:description" content="From business requirements and database design to APIs, web and mobile apps, and deployment.">
+<meta property="og:image" content="https://dustin2.github.io/portfolio-website/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dustin Gallardo, Full Stack Developer">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&display=swap" rel="stylesheet">
 <style>
   /* Dark-only on purpose, like the reference design. */
   :root { --bg:#07090f; --fg:#e6ebf5; --muted:#8b95a8; --line:#1a2133; --card:#0d1220; --accent:#5b9dff; color-scheme:dark; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#07090f; } }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   /* clip (not hidden) keeps the sticky nav working while the glow can bleed past the content width. */
@@ -25,7 +37,14 @@
   nav ul { display:flex; gap:24px; list-style:none; margin:0 0 0 auto; padding:0; font-size:.9rem; }
   nav ul a { text-decoration:none; color:var(--muted); }
   nav ul a:hover { color:var(--accent); }
-  @media (max-width:700px) { nav ul { display:none; } }
+  .menu-btn { display:none; margin-left:auto; background:none; border:1px solid var(--line); border-radius:999px; color:var(--fg); font:inherit; font-size:.85rem; padding:6px 14px; cursor:pointer; }
+  /* Mobile: links collapse into a dropdown opened by the Menu button. */
+  @media (max-width:700px) {
+    .menu-btn { display:block; }
+    nav ul { display:none; position:absolute; top:64px; left:0; right:0; flex-direction:column; gap:0; margin:0; padding:8px 16px 16px; background:var(--bg); border-bottom:1px solid var(--line); }
+    nav.open ul { display:flex; }
+    nav ul a { display:block; padding:12px 0; font-size:1.05rem; color:var(--fg); }
+  }
   .lang { display:flex; border:1px solid var(--line); border-radius:999px; padding:3px; font:inherit; font-size:.8rem; background:none; color:var(--muted); cursor:pointer; }
   .lang span { padding:3px 10px; border-radius:999px; }
   html[lang="en"] .lang [data-l="en"], html[lang="es"] .lang [data-l="es"] { background:var(--accent); color:var(--bg); font-weight:600; }
@@ -121,13 +140,14 @@
 <!-- Translations: English is the text in the page, Spanish lives in data-es on the same element. -->
 <nav><div class="wrap">
   <b>DG<span style="color:var(--accent)">.</span></b>
-  <ul>
+  <ul id="nav-links">
     <li><a href="#about" data-es="Sobre mí">About</a></li>
     <li><a href="#what" data-es="Qué hago">What I do</a></li>
     <li><a href="#career" data-es="Trayectoria">Career</a></li>
     <li><a href="#work" data-es="Proyectos">Work</a></li>
     <li><a href="#contact" data-es="Contacto">Contact</a></li>
   </ul>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" data-es="Menú">Menu</button>
   <button class="lang" type="button" aria-label="Cambiar idioma / Change language"><span data-l="en">EN</span><span data-l="es">ES</span></button>
 </div></nav>
 
@@ -223,14 +243,15 @@
       <div class="num">01</div>
       <div>
         <h3>Pro-Hielo ERP</h3>
-        <p class="kind" data-es="Sistema de gestión empresarial · web + móvil">Business management system · web + mobile</p>
+        <p class="kind" data-es="Sistema de gestión empresarial · web, app móvil en desarrollo">Business management system · web, mobile app in progress</p>
         <ul>
-          <li data-es="ERP modular para una empresa productora de hielo: producción, inventario, ventas, clientes, rutas y empleados.">Modular ERP for an ice production company: production, inventory, sales, customers, routes and employees.</li>
-          <li data-es="Monorepo con app web en React/TypeScript, API REST en Laravel con autenticación JWT y respuestas estandarizadas, y app móvil con Expo sobre la misma API.">Monorepo with a React/TypeScript web app, a Laravel REST API with JWT auth and standardized responses, and an Expo mobile app on the same API.</li>
-          <li data-es="Acceso por roles, movimientos de inventario con correcciones, historial de precios por cliente y documentos imprimibles desde el teléfono.">Role-based access, inventory movements with corrections, customer price history, printable documents from the phone.</li>
-          <li data-es="Entorno en contenedores con Docker Compose (PHP-FPM, Nginx, PostgreSQL); flujo de ramas feature/develop/main con pull requests y convenciones documentadas.">Containerized with Docker Compose (PHP-FPM, Nginx, PostgreSQL); feature/develop/main workflow with pull requests and documented conventions.</li>
+          <li data-es="ERP modular para una empresa que fabrica y distribuye hielo: personas y empleados, producción, inventario de cámara fría, productos y precios, clientes y tiendas, rutas de reparto y ventas.">Modular ERP for an ice manufacturing and distribution company: people and employees, production, cold-room inventory, products and prices, customers and stores, delivery routes and sales.</li>
+          <li data-es="Reglas de negocio acordadas con el dueño y documentadas antes de construir cada módulo; el modelo de datos separa persona, empleado y usuario.">Business rules agreed with the owner and documented before building each module; the data model separates person, employee and user.</li>
+          <li data-es="App web en React y TypeScript, instalable como PWA, sobre una API REST en Laravel con JWT, respuestas estandarizadas y un esquema de PostgreSQL versionado.">React and TypeScript web app, installable as a PWA, on a Laravel REST API with JWT, standardized responses and a versioned PostgreSQL schema.</li>
+          <li data-es="Calidad y operación: pruebas con PHPUnit y Vitest, análisis estático, límites de intentos y cabeceras de seguridad; Docker Compose, HTTPS con Caddy y respaldos diarios fuera del servidor.">Quality and operations: PHPUnit and Vitest tests, static analysis, rate limits and security headers; Docker Compose, HTTPS with Caddy and daily off-site backups.</li>
+          <li data-es="App móvil con Expo en desarrollo: inicio de sesión, cambio de contraseña obligatorio y menú por rol sobre la misma API.">Mobile app with Expo in progress: login, forced password change and a role-based menu on the same API.</li>
         </ul>
-        <div class="tags"><span>React</span><span>TypeScript</span><span>Laravel</span><span>PostgreSQL</span><span>Docker</span><span>JWT</span><span>TanStack</span><span>Expo</span></div>
+        <div class="tags"><span>React</span><span>TypeScript</span><span>Laravel</span><span>PostgreSQL</span><span>Docker</span><span>JWT</span><span>TanStack</span><span>Tailwind</span><span>Expo</span></div>
       </div>
     </article>
 
@@ -312,6 +333,12 @@
   const start = new URLSearchParams(location.search).get('lang') || saved || (navigator.language.startsWith('es') ? 'es' : 'en');
   setLang(start === 'es' ? 'es' : 'en');
   document.querySelector('.lang').onclick = () => setLang(document.documentElement.lang === 'es' ? 'en' : 'es');
+
+  // Mobile menu: toggle, and close after picking a section.
+  const nav = document.querySelector('nav'), menuBtn = document.querySelector('.menu-btn');
+  const setMenu = open => { nav.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', open); };
+  menuBtn.onclick = () => setMenu(!nav.classList.contains('open'));
+  document.querySelectorAll('#nav-links a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isEs = () => document.documentElement.lang === 'es';
