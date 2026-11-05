@@ -1,0 +1,88 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { content, type Lang } from '../i18n';
+import { langs } from '../i18n/types';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+const site = Astro.site!;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const pageUrl = (l: Lang) => new URL(getRelativeLocaleUrl(l), site).href;
+const ogImage = new URL(`${base}og.png`, site).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={pageUrl(lang)} />
+    {langs.map((l) => <link rel="alternate" hreflang={l} href={pageUrl(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={pageUrl('en')} />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <meta name="theme-color" content="#07090f" />
+    <!-- Link previews (LinkedIn, WhatsApp, Slack, X). Image URLs must be absolute. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl(lang)} />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.meta.ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&display=swap" rel="stylesheet" />
+    {
+      lang === 'en' && (
+        // First visit from a Spanish-language browser: go to /es/. Once the visitor picks a language, respect it.
+        <script is:inline define:vars={{ esUrl: getRelativeLocaleUrl('es') }}>
+          try { if (!localStorage.getItem('lang') && navigator.language.startsWith('es')) location.replace(esUrl); } catch {}
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <nav>
+      <div class="wrap">
+        <b>DG<span style="color:var(--accent)">.</span></b>
+        <ul id="nav-links">
+          <li><a href="#about">{t.nav.about}</a></li>
+          <li><a href="#what">{t.nav.what}</a></li>
+          <li><a href="#career">{t.nav.career}</a></li>
+          <li><a href="#work">{t.nav.work}</a></li>
+          <li><a href="#contact">{t.nav.contact}</a></li>
+        </ul>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links">{t.nav.menu}</button>
+        <div class="lang" role="group" aria-label={t.nav.switchLang}>
+          {
+            langs.map((l) => (
+              <a href={getRelativeLocaleUrl(l)} hreflang={l} lang={l} data-lang={l} aria-current={l === lang ? 'page' : undefined}>
+                {l.toUpperCase()}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+    <div class="toast" role="status" aria-live="polite" data-copied={t.contact.copied}></div>
+
+    <footer><div class="wrap">{t.footer}</div></footer>
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>
