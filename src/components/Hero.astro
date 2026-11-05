@@ -1,4 +1,5 @@
 ---
+import { githubUrl } from '../data';
 import type { Content } from '../i18n';
 
 interface Props {
@@ -8,13 +9,21 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<header class="hero wrap">
-  <p class="hi">{t.hero.hi}</p>
-  <h1>Dustin<br />Gallardo<span>.</span></h1>
-  <p class="typed" aria-hidden="true"><span id="typed" data-phrases={JSON.stringify(t.hero.phrases)}></span><span class="caret"></span></p>
-  <p class="role">{t.hero.role}</p>
+<header class="hero wrap" id="top">
+  <p class="kicker">{t.hero.kicker}</p>
+  <h1>{t.hero.title}</h1>
+  <ol class="pipeline" aria-label={t.hero.pipelineLabel}>
+    {
+      t.hero.pipeline.map((step, i) => (
+        <li style={`--i:${i}`}>
+          {i > 0 && <span class="arrow" aria-hidden="true" />}
+          <span class="step"><span class="n">{String(i + 1).padStart(2, '0')}</span> {step}</span>
+        </li>
+      ))
+    }
+  </ol>
   <div class="cta">
     <a class="btn primary" href="#work">{t.hero.seeWork}</a>
-    <a class="btn" href="#contact">{t.hero.contact}</a>
+    <a class="btn" href={githubUrl}>GitHub</a>
   </div>
 </header>
