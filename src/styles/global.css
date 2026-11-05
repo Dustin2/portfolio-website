@@ -59,6 +59,11 @@ nav ul a { text-decoration:none; color:var(--muted); }
 
 /* Hero */
 .hero { min-height:calc(100svh - 64px); display:flex; flex-direction:column; justify-content:center; gap:32px; padding-top:48px; padding-bottom:48px; }
+.hero { position:relative; }
+.hero > :not(.hero-3d) { position:relative; z-index:1; }
+/* The 3D network fills the hero behind the text and fades in once it has drawn its first frame. */
+.hero-3d { position:absolute; inset:0 -32px; width:calc(100% + 64px); height:100%; pointer-events:none; opacity:0; transition:opacity 1.2s ease; }
+.hero-3d.ready { opacity:1; }
 .hero .kicker { color:var(--accent); margin:0; }
 .hero h1 { margin:0; font-size:clamp(2.6rem, 6.4vw, 4.75rem); line-height:1.03; font-weight:700; letter-spacing:-.03em; max-width:980px; }
 .pipeline { list-style:none; margin:8px 0 0; padding:0; display:flex; flex-wrap:wrap; align-items:center; row-gap:12px; font-family:var(--mono); font-size:14px; }

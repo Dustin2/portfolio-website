@@ -46,6 +46,16 @@ if (matchMedia('(pointer: fine)').matches && !reduced) {
   }, { passive: true });
 }
 
+// 3D network behind the hero: only on large screens with a mouse, with motion allowed, and only
+// after the page has loaded, so three.js never delays the first paint. Everywhere else the grid stays.
+const hero = $<HTMLElement>('.hero');
+if (hero && !reduced && matchMedia('(pointer: fine) and (min-width: 1000px)').matches) {
+  const load = () => import('./hero3d').then((m) => m.mountHeroNetwork(hero, getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()));
+  const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(load) : setTimeout(load, 200));
+  if (document.readyState === 'complete') idle();
+  else addEventListener('load', idle, { once: true });
+}
+
 // Timeline: the line fills as the middle of the screen passes it, and each marker lights up.
 const timeline = $<HTMLElement>('.timeline');
 if (timeline) {
