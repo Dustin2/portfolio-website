@@ -24,7 +24,7 @@ export interface Content {
     jobs: { when: string; role: string; where: string; bullets: string[] }[];
     education: { title: string; detail: string }[];
   };
-  about: { kicker: string; paragraphs: string[]; learningLabel: string; learning: string };
+  about: { kicker: string; paragraphs: string[] };
   contact: { kicker: string; title: string; hint: string; sendEmail: string; copied: string };
   footer: string;
 }

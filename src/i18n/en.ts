@@ -126,12 +126,8 @@ export const en: Content = {
   about: {
     kicker: '// about',
     paragraphs: [
-      "I'm a full stack developer focused on designing and building software solutions end to end. I get involved from requirements analysis and architecture design through development, implementation and deployment.",
-      "I like to understand how a problem works before writing code. I've taken part in planning and leading projects, working with databases, APIs, and web and mobile apps.",
-      'I enjoy taking on technical challenges, learning new technologies and turning ideas into working products. I especially value clear code, well-grounded decisions, and solutions that make sense both technically and functionally.',
+      "Full stack developer with experience across the whole cycle: requirements, data modeling, APIs, web and mobile apps, and deployment. I've led projects coordinating frontend, backend and database work, and I focus on understanding the business problem before writing code.",
     ],
-    learningLabel: 'Currently learning:',
-    learning: 'on-device AI for Android · Kotlin & Jetpack Compose · Linux',
   },
   contact: { kicker: '// contact', title: "Let's build something.", hint: 'Click to copy', sendEmail: 'Send email →', copied: 'Email copied!' },
   footer: 'Designed & built by Dustin Gallardo · 2026',
