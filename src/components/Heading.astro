@@ -1,0 +1,13 @@
+---
+import type { Heading } from '../i18n/types';
+
+interface Props {
+  text: Heading;
+  class?: string;
+}
+
+const { text, class: className } = Astro.props;
+const [plain, accent] = text;
+---
+
+<h2 class={className}>{plain}{accent && <span>{accent}</span>}</h2>

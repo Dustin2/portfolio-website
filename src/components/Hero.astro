@@ -1,0 +1,20 @@
+---
+import type { Content } from '../i18n';
+
+interface Props {
+  t: Content;
+}
+
+const { t } = Astro.props;
+---
+
+<header class="hero wrap">
+  <p class="hi">{t.hero.hi}</p>
+  <h1>Dustin<br />Gallardo<span>.</span></h1>
+  <p class="typed" aria-hidden="true"><span id="typed" data-phrases={JSON.stringify(t.hero.phrases)}></span><span class="caret"></span></p>
+  <p class="role">{t.hero.role}</p>
+  <div class="cta">
+    <a class="btn primary" href="#work">{t.hero.seeWork}</a>
+    <a class="btn" href="#contact">{t.hero.contact}</a>
+  </div>
+</header>

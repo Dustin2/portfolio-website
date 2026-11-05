@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { content, type Lang } from '../i18n';
+import About from './About.astro';
+import Career from './Career.astro';
+import Contact from './Contact.astro';
+import Hero from './Hero.astro';
+import Stack from './Stack.astro';
+import WhatIDo from './WhatIDo.astro';
+import Work from './Work.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+---
+
+<Base lang={lang}>
+  <Hero t={t} />
+  <About t={t} />
+  <WhatIDo t={t} />
+  <Career t={t} />
+  <Work t={t} lang={lang} />
+  <Stack t={t} />
+  <Contact t={t} />
+</Base>

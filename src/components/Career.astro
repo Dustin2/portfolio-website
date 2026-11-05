@@ -1,0 +1,38 @@
+---
+import type { Content } from '../i18n';
+import Heading from './Heading.astro';
+
+interface Props {
+  t: Content;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="career">
+  <div class="wrap reveal">
+    <Heading text={t.career.title} />
+    <div class="timeline">
+      {
+        t.career.jobs.map((job) => (
+          <div class="job">
+            <div class="when">{job.when}</div>
+            <h3>{job.role}</h3>
+            <p class="where">{job.where}</p>
+            <ul>{job.bullets.map((b) => <li>{b}</li>)}</ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="edu">
+      {
+        t.career.education.map((e) => (
+          <div class="box">
+            <h3>{e.title}</h3>
+            <p>{e.detail}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

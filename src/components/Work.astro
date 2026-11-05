@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import { projects, tagLabel } from '../data';
+import type { Content, Lang } from '../i18n';
+import Heading from './Heading.astro';
+import Tags from './Tags.astro';
+
+interface Props {
+  t: Content;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+---
+
+<section id="work">
+  <div class="wrap">
+    <Heading text={t.work.title} class="reveal" />
+    {
+      projects.map((project, i) => {
+        const text = t.work.projects[project.id];
+        const images = project.images;
+        return (
+          <article class="work reveal">
+            <div class="num">{String(i + 1).padStart(2, '0')}</div>
+            <div>
+              <h3>{project.name}</h3>
+              <p class="kind">{text.kind}</p>
+              {images?.layout === 'phones' && (
+                <div class="phones">
+                  {images.srcs.map((src, n) => (
+                    <Image src={src} alt={text.imageAlts[n] ?? ''} widths={[270, 540]} sizes="200px" loading="lazy" />
+                  ))}
+                </div>
+              )}
+              {images?.layout === 'wide' && images.srcs[0] && (
+                <Image class="shot" src={images.srcs[0]} alt={text.imageAlts[0] ?? ''} widths={[640, 983]} sizes="(max-width: 700px) 100vw, 640px" loading="lazy" />
+              )}
+              <ul>{text.bullets.map((b) => <li>{b}</li>)}</ul>
+              <Tags tags={project.tags.map((tag) => tagLabel(tag, lang))} />
+              {project.repo && (
+                <p class="repo"><a class="link" href={project.repo}>{t.work.sourceCode}</a></p>
+              )}
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .repo { margin:16px 0 0; }
+</style>
