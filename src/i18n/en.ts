@@ -126,7 +126,9 @@ export const en: Content = {
   about: {
     kicker: '// about',
     paragraphs: [
-      "Full stack developer with experience across the whole cycle: requirements, data modeling, APIs, web and mobile apps, and deployment. I've led projects coordinating frontend, backend and database work, and I focus on understanding the business problem before writing code.",
+      'Full stack developer with experience across the whole software development cycle: from gathering requirements and modeling data to building APIs, web and mobile apps, and deploying them.',
+      "I've led projects coordinating frontend, backend and databases, keeping a complete view of each solution. I care about understanding the business problem before writing code, finding practical solutions and building software that truly adds value.",
+      "I'm curious by nature, I enjoy learning new technologies, and I have the determination to dig until I find the solution, even when the problem seems to be hiding at 2 a.m.",
     ],
   },
   contact: { kicker: '// contact', title: "Let's build something.", hint: 'Click to copy', sendEmail: 'Send email →', copied: 'Email copied!' },

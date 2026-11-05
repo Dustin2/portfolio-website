@@ -126,7 +126,9 @@ export const es: Content = {
   about: {
     kicker: '// sobre mí',
     paragraphs: [
-      'Desarrollador full stack con experiencia en todo el ciclo: requerimientos, modelado de datos, APIs, aplicaciones web y móviles, y despliegue. He liderado proyectos coordinando frontend, backend y base de datos, y me enfoco en entender el problema del negocio antes de escribir código.',
+      'Desarrollador Full Stack con experiencia en todo el ciclo de desarrollo de software: desde el levantamiento de requerimientos y el modelado de datos hasta la construcción de APIs, aplicaciones web y móviles, y su despliegue.',
+      'He liderado proyectos coordinando frontend, backend y bases de datos, manteniendo una visión integral de cada solución. Me interesa entender los problemas del negocio antes de escribir código, encontrar soluciones prácticas y construir software que realmente aporte valor.',
+      'Soy curioso por naturaleza, disfruto aprender tecnologías nuevas y tengo la determinación de investigar hasta encontrar la solución, incluso cuando el problema parece estar escondido a las 2 a. m.',
     ],
   },
   contact: { kicker: '// contacto', title: 'Construyamos algo.', hint: 'Haz clic para copiar', sendEmail: 'Enviar correo →', copied: '¡Correo copiado!' },
