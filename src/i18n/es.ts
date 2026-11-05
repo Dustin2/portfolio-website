@@ -6,46 +6,91 @@ export const es: Content = {
     description: 'Dustin Gallardo, desarrollador full stack: desde los requerimientos del negocio y el diseño de la base de datos hasta las APIs, las apps web y móviles, y el despliegue.',
     ogAlt: 'Dustin Gallardo, Desarrollador Full Stack',
   },
-  nav: { about: 'Sobre mí', what: 'Qué hago', career: 'Trayectoria', work: 'Proyectos', contact: 'Contacto', menu: 'Menú', switchLang: 'Idioma' },
+  nav: { work: 'proyectos', expertise: 'especialidades', experience: 'trayectoria', about: 'sobre mí', contact: 'contacto', menu: 'menú', switchLang: 'Idioma' },
   hero: {
-    hi: 'Hola, soy',
-    role: 'Construyo aplicaciones web con React, Next.js y Laravel, y apps móviles con React Native y Kotlin.',
-    seeWork: 'Ver mis proyectos',
-    contact: 'Contáctame',
-    phrases: ['Desarrollador Full Stack', 'React y Next.js', 'APIs con Laravel', 'Android con Kotlin', 'IA en el dispositivo'],
+    kicker: '// desarrollador full stack · colima, méxico',
+    title: 'Construyo sistemas completos, desde el primer requerimiento hasta producción.',
+    pipelineLabel: 'Cómo trabajo',
+    pipeline: ['requerimientos', 'modelo de datos', 'api', 'web + móvil', 'producción'],
+    seeWork: 'Ver los proyectos',
   },
-  about: {
-    title: ['Sobre ', 'mí'],
-    paragraphs: [
-      'Soy desarrollador Full Stack, enfocado en diseñar y construir soluciones de software de principio a fin. Me involucro desde el análisis de requerimientos y el diseño de arquitectura hasta el desarrollo, la implementación y el despliegue.',
-      'Me interesa entender cómo funcionan los problemas antes de escribir código. He participado en la planificación y liderazgo de proyectos, trabajando con bases de datos, APIs y aplicaciones web y móviles.',
-      'Disfruto enfrentar desafíos técnicos, aprender nuevas tecnologías y convertir ideas en productos funcionales. Valoro especialmente el código claro, las decisiones bien fundamentadas y las soluciones que tienen sentido tanto técnica como funcionalmente.',
-    ],
-    learningLabel: 'Ahora estoy aprendiendo:',
-    learning: 'IA en el dispositivo para Android · Kotlin y Jetpack Compose · Linux',
+  stages: {
+    requirements: 'requerimientos',
+    dataModel: 'modelo de datos',
+    api: 'api',
+    web: 'web',
+    mobile: 'móvil',
+    production: 'producción',
+    design: 'diseño',
+    app: 'app',
+    onDeviceAI: 'ia en el dispositivo',
+    releases: 'releases',
+    testsCI: 'pruebas + ci',
   },
-  what: {
-    title: ['Qué ', 'hago'],
+  inProgress: 'en desarrollo',
+  work: {
+    kicker: '// proyectos — las etapas que cubrió cada uno',
+    sourceCode: 'Código fuente →',
+    projects: {
+      proHielo: {
+        kind: 'erp',
+        summary: 'ERP para una empresa que fabrica y distribuye hielo: personas y empleados, producción, inventario de cámara fría, productos y precios, clientes y tiendas, rutas de reparto y ventas.',
+        highlights: [
+          'Reglas de negocio acordadas con el dueño y documentadas antes de construir cada módulo.',
+          'API REST en Laravel con JWT y un esquema de PostgreSQL versionado; app web en React instalable como PWA.',
+          'Pruebas con PHPUnit y Vitest, límites de intentos y cabeceras de seguridad; Docker Compose, HTTPS con Caddy y respaldos diarios fuera del servidor.',
+        ],
+        imageAlts: [],
+      },
+      jarvis: {
+        kind: 'android',
+        summary: 'Organizador local-first con un asistente por voz que corre Gemma en el teléfono con LiteRT-LM. Sin cuenta ni servidor: los datos nunca salen del dispositivo.',
+        highlights: [
+          'Tareas recurrentes, proyectos, listas de compras, finanzas, recordatorios y widget de pantalla de inicio.',
+          'Compose → ViewModel → Repository → Room, con migraciones versionadas y respaldos diarios.',
+          'La lógica de recurrencia y planeación tiene pruebas unitarias; la capa de datos, pruebas en el dispositivo.',
+        ],
+        imageAlts: [
+          'Pantalla Mi día de Jarvis: progreso, siguiente paso y tareas de hoy',
+          'Ask Jarvis respondiendo qué vence hoy con el modelo del teléfono',
+          'Pantalla de dinero de Jarvis: balance del mes y gasto por categoría',
+        ],
+      },
+      dockClock: {
+        kind: 'android · código abierto',
+        summary: 'Un teléfono cargando se convierte en un reloj de escritorio con tus notificaciones. La misma pantalla de Compose corre en una Activity y en un DreamService.',
+        highlights: [
+          'Las notificaciones se leen solo en el dispositivo; eliges qué apps aparecen y puedes ocultar su contenido.',
+          'Modo nocturno y protección contra quemado OLED que mueve el contenido cada minuto.',
+          'APIs de Android detrás de interfaces para pruebas en la JVM; CI con ktlint, detekt y pruebas.',
+        ],
+        imageAlts: ['DockClock: un reloj grande en horizontal con una notificación al lado'],
+      },
+    },
+  },
+  expertise: {
+    kicker: '// especialidades',
     areas: {
-      frontend: { title: 'Frontend', text: 'Interfaces web con React y Next.js en TypeScript, con manejo de datos, rutas y librerías de componentes.' },
-      backend: { title: 'Backend y datos', text: 'APIs REST y lógica de negocio en Laravel, modelado y normalización de bases de datos, entornos en contenedores y CI/CD.' },
-      mobile: { title: 'Mobile', text: 'Apps multiplataforma con React Native y Expo, y apps nativas de Android con Kotlin y Jetpack Compose.' },
+      architecture: { title: 'Arquitectura', text: 'Módulos organizados por funcionalidad, con las reglas de negocio escritas antes del código.' },
+      backend: { title: 'Backend', text: 'APIs REST en Laravel con JWT, respuestas estandarizadas y manejo centralizado de errores.' },
+      frontend: { title: 'Frontend', text: 'React y Next.js en TypeScript con TanStack Query y Router.' },
+      databases: { title: 'Bases de datos', text: 'Modelos normalizados en PostgreSQL y SQL Server, con cambios de esquema versionados.' },
+      mobile: { title: 'Móvil', text: 'Android nativo con Kotlin y Compose; multiplataforma con React Native y Expo.' },
+      devops: { title: 'DevOps', text: 'Docker Compose, GitHub Actions a QA y producción, HTTPS y respaldos diarios.' },
     },
   },
   career: {
-    title: ['Mi ', 'trayectoria'],
+    kicker: '// trayectoria',
     jobs: [
       {
         when: 'Dic 2024 – May 2026',
         role: 'Desarrollador Full Stack',
         where: 'Grupo Tecnológico Alfa PCS Max',
         bullets: [
-          'Desarrollo y mantenimiento de aplicaciones full stack con Laravel, SQL Server, Next.js y TypeScript en todo el ciclo: requerimientos, planeación, implementación y mantenimiento.',
-          'Diseño y normalización de bases de datos; APIs en Laravel e interfaces web con Next.js, TanStack y Ant Design.',
+          'Desarrollo y mantenimiento de aplicaciones full stack con Laravel, SQL Server, Next.js y TypeScript, desde los requerimientos hasta el mantenimiento.',
           'Liderazgo de proyectos: a cargo de la planeación, el seguimiento y la entrega, coordinando frontend, backend, base de datos y requerimientos.',
-          'Análisis de problemas técnicos y de negocio, y búsqueda, propuesta e implementación de soluciones.',
+          'Diseño y normalización de bases de datos; análisis de problemas técnicos y de negocio e implementación de soluciones.',
           'Automatización de despliegues a QA y producción con GitHub Actions.',
-          'Inicié en el equipo móvil con React Native y Expo.',
         ],
       },
       {
@@ -78,49 +123,12 @@ export const es: Content = {
       { title: 'Técnico Programador', detail: 'CBTIS 19 · 2015 – 2018' },
     ],
   },
-  work: {
-    title: ['Proyectos ', 'destacados'],
-    sourceCode: 'Código fuente →',
-    projects: {
-      proHielo: {
-        kind: 'Sistema de gestión empresarial · web, app móvil en desarrollo',
-        bullets: [
-          'ERP modular para una empresa que fabrica y distribuye hielo: personas y empleados, producción, inventario de cámara fría, productos y precios, clientes y tiendas, rutas de reparto y ventas.',
-          'Reglas de negocio acordadas con el dueño y documentadas antes de construir cada módulo; el modelo de datos separa persona, empleado y usuario.',
-          'App web en React y TypeScript, instalable como PWA, sobre una API REST en Laravel con JWT, respuestas estandarizadas y un esquema de PostgreSQL versionado.',
-          'Calidad y operación: pruebas con PHPUnit y Vitest, análisis estático, límites de intentos y cabeceras de seguridad; Docker Compose, HTTPS con Caddy y respaldos diarios fuera del servidor.',
-          'App móvil con Expo en desarrollo: inicio de sesión, cambio de contraseña obligatorio y menú por rol sobre la misma API.',
-        ],
-        imageAlts: [],
-      },
-      jarvis: {
-        kind: 'App de organización personal · Android',
-        bullets: [
-          'Organizador local-first: vista de hoy, bandeja de entrada, tareas recurrentes, proyectos, listas de compras, finanzas, búsqueda, recordatorios y widget de pantalla de inicio.',
-          '«Ask Jarvis»: asistente por voz con un modelo de lenguaje que corre en el teléfono (Gemma con LiteRT-LM), sin internet: crea recordatorios, edita tareas, responde sobre gastos y lee un resumen cada mañana.',
-          'Compose → ViewModel (StateFlow) → Repository → Room, con la base de datos como única fuente de verdad.',
-          'Migraciones versionadas, respaldos automáticos diarios y recordatorios exactos; la lógica de recurrencia y planeación tiene pruebas unitarias.',
-        ],
-        imageAlts: [
-          'Pantalla Mi día de Jarvis: progreso, siguiente paso y tareas de hoy',
-          'Ask Jarvis respondiendo qué vence hoy con el modelo del teléfono',
-          'Pantalla de dinero de Jarvis: balance del mes y gasto por categoría',
-        ],
-      },
-      dockClock: {
-        kind: 'Reloj de escritorio · Android',
-        bullets: [
-          'Convierte un teléfono cargando en un reloj de escritorio siempre encendido con tus notificaciones recientes; funciona como protector de pantalla en vertical y horizontal.',
-          'Privacidad: las notificaciones se leen solo en el dispositivo; eliges qué apps aparecen y puedes ocultar su contenido.',
-          'Modo nocturno que atenúa el reloj de 22:00 a 07:00 y protección contra quemado de pantallas OLED que mueve el contenido cada minuto.',
-          'Una sola pantalla de reloj en dos contenedores: la misma pantalla de Compose corre en una Activity y en un DreamService, que provee su propio ciclo de vida y ViewModel.',
-          'APIs de Android detrás de interfaces para pruebas unitarias en la JVM; CI en GitHub Actions con ktlint, detekt y pruebas.',
-        ],
-        imageAlts: ['DockClock: un reloj grande en horizontal con una notificación al lado'],
-      },
-    },
+  about: {
+    kicker: '// sobre mí',
+    paragraphs: [
+      'Desarrollador full stack con experiencia en todo el ciclo: requerimientos, modelado de datos, APIs, aplicaciones web y móviles, y despliegue. He liderado proyectos coordinando frontend, backend y base de datos, y me enfoco en entender el problema del negocio antes de escribir código.',
+    ],
   },
-  stack: { title: ['Tecnologías', ''] },
-  contact: { title: ['Hablemos', '.'], hint: 'Haz clic para copiar', sendEmail: 'Enviar correo →', copied: '¡Correo copiado!' },
+  contact: { kicker: '// contacto', title: 'Construyamos algo.', hint: 'Haz clic para copiar', sendEmail: 'Enviar correo →', copied: '¡Correo copiado!' },
   footer: 'Diseñado y desarrollado por Dustin Gallardo · 2026',
 };

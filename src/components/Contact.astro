@@ -1,7 +1,6 @@
 ---
 import { email, githubUrl } from '../data';
 import type { Content } from '../i18n';
-import Heading from './Heading.astro';
 
 interface Props {
   t: Content;
@@ -10,9 +9,10 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="contact" class="contact">
-  <div class="wrap reveal">
-    <Heading text={t.contact.title} />
+<section id="contact" class="section wrap contact">
+  <p class="kicker reveal">{t.contact.kicker}</p>
+  <h2 class="reveal">{t.contact.title}</h2>
+  <div class="reveal">
     <button class="mail" type="button" data-email={email}>{email}</button>
     <p class="hint">{t.contact.hint}</p>
     <div class="social">

@@ -1,6 +1,5 @@
 ---
 import type { Content } from '../i18n';
-import Heading from './Heading.astro';
 
 interface Props {
   t: Content;
@@ -9,17 +8,7 @@ interface Props {
 const { t } = Astro.props;
 ---
 
-<section id="about" class="about">
-  <div class="wrap reveal">
-    <Heading text={t.about.title} />
-    <div class="about-text">{t.about.paragraphs.map((p) => <p>{p}</p>)}</div>
-    <p class="learning">
-      <span>{t.about.learningLabel}</span>{' '}{t.about.learning}
-    </p>
-  </div>
+<section id="about" class="section wrap">
+  <p class="kicker reveal">{t.about.kicker}</p>
+  <div class="about-text reveal">{t.about.paragraphs.map((p) => <p>{p}</p>)}</div>
 </section>
-
-<style>
-  .learning { margin-top:32px; font-size:1rem; color:var(--muted); }
-  .learning span { color:var(--accent); font-weight:600; }
-</style>

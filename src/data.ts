@@ -1,5 +1,5 @@
 import type { ImageMetadata } from 'astro';
-import type { ExpertiseId, Lang, ProjectId } from './i18n/types';
+import type { ExpertiseId, ProjectId, StageId } from './i18n/types';
 import dockClock from './assets/dockclock.png';
 import jarvisAsk from './assets/jarvis-ask.webp';
 import jarvisMoney from './assets/jarvis-money.webp';
@@ -9,50 +9,40 @@ import jarvisToday from './assets/jarvis-today.webp';
 export const email = 'dustin2.dev@gmail.com';
 export const githubUrl = 'https://github.com/Dustin2';
 
-export const expertiseTags: Record<ExpertiseId, string[]> = {
-  frontend: ['React', 'Next.js', 'TypeScript', 'TanStack Query', 'TanStack Router', 'Ant Design'],
-  backend: ['Laravel', 'PHP', 'PostgreSQL', 'SQL Server', 'Docker', 'GitHub Actions'],
-  mobile: ['React Native', 'Expo', 'Kotlin', 'Jetpack Compose', 'Room'],
-};
-
-/** A tag is usually a product name; the few that are words get a translation. */
-type Tag = string | Record<Lang, string>;
-export const tagLabel = (tag: Tag, lang: Lang) => (typeof tag === 'string' ? tag : tag[lang]);
+export const expertiseOrder: ExpertiseId[] = ['architecture', 'backend', 'frontend', 'databases', 'mobile', 'devops'];
 
 export interface Project {
   id: ProjectId;
   name: string;
-  tags: Tag[];
+  /** Stages this project covered; `inProgress` ones are drawn dashed. Only list what the repository shows. */
+  stages: { id: StageId; inProgress?: boolean }[];
+  stack: string[];
   repo?: string;
-  /** 'phones' shows portrait screenshots in a swipeable row; 'wide' shows one landscape image. */
+  /** 'phones' shows portrait screenshots in a row; 'wide' shows one landscape image. */
   images?: { layout: 'phones' | 'wide'; srcs: ImageMetadata[] };
 }
 
 export const projects: Project[] = [
   {
     id: 'proHielo',
-    name: 'Pro-Hielo ERP',
-    tags: ['React', 'TypeScript', 'Laravel', 'PostgreSQL', 'Docker', 'JWT', 'TanStack', 'Tailwind', 'Expo'],
+    name: 'Pro-Hielo',
+    stages: [{ id: 'requirements' }, { id: 'dataModel' }, { id: 'api' }, { id: 'web' }, { id: 'mobile', inProgress: true }, { id: 'production' }],
+    stack: ['laravel', 'react', 'typescript', 'postgresql', 'docker'],
   },
   {
     id: 'jarvis',
     name: 'Jarvis',
-    tags: ['Kotlin', 'Jetpack Compose', 'Material 3 Expressive', 'Room', 'WorkManager', { en: 'On-device AI', es: 'IA en el dispositivo' }, 'LiteRT-LM'],
+    stages: [{ id: 'design' }, { id: 'dataModel' }, { id: 'app' }, { id: 'onDeviceAI' }, { id: 'releases' }],
+    stack: ['kotlin', 'compose', 'room', 'workmanager', 'litert-lm'],
     repo: 'https://github.com/Dustin2/jarvis',
     images: { layout: 'phones', srcs: [jarvisToday, jarvisAsk, jarvisMoney] },
   },
   {
     id: 'dockClock',
     name: 'DockClock',
-    tags: ['Kotlin', 'Jetpack Compose', 'Material 3', 'Hilt', 'DataStore', 'Navigation 3', 'DreamService', 'GitHub Actions'],
+    stages: [{ id: 'design' }, { id: 'app' }, { id: 'testsCI' }],
+    stack: ['kotlin', 'compose', 'hilt', 'datastore', 'github actions'],
     repo: 'https://github.com/Dustin2/dock-clock',
     images: { layout: 'wide', srcs: [dockClock] },
   },
-];
-
-export const stack = [
-  'React', 'Next.js', 'TypeScript', 'JavaScript', 'TanStack', 'Ant Design',
-  'PHP', 'Laravel', 'REST APIs', 'JWT', 'PostgreSQL', 'SQL Server',
-  'React Native', 'Expo', 'Kotlin', 'Jetpack Compose',
-  'Git', 'GitHub Actions', 'Docker', 'pnpm',
 ];

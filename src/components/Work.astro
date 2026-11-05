@@ -1,54 +1,54 @@
 ---
 import { Image } from 'astro:assets';
-import { projects, tagLabel } from '../data';
-import type { Content, Lang } from '../i18n';
-import Heading from './Heading.astro';
-import Tags from './Tags.astro';
+import { projects } from '../data';
+import type { Content } from '../i18n';
 
 interface Props {
   t: Content;
-  lang: Lang;
 }
 
-const { t, lang } = Astro.props;
+const { t } = Astro.props;
 ---
 
-<section id="work">
-  <div class="wrap">
-    <Heading text={t.work.title} class="reveal" />
+<section id="work" class="section wrap">
+  <p class="kicker reveal">{t.work.kicker}</p>
+  <div class="projects">
     {
-      projects.map((project, i) => {
+      projects.map((project) => {
         const text = t.work.projects[project.id];
         const images = project.images;
         return (
-          <article class="work reveal">
-            <div class="num">{String(i + 1).padStart(2, '0')}</div>
-            <div>
-              <h3>{project.name}</h3>
-              <p class="kind">{text.kind}</p>
-              {images?.layout === 'phones' && (
-                <div class="phones">
-                  {images.srcs.map((src, n) => (
-                    <Image src={src} alt={text.imageAlts[n] ?? ''} widths={[270, 540]} sizes="200px" loading="lazy" />
-                  ))}
-                </div>
-              )}
-              {images?.layout === 'wide' && images.srcs[0] && (
-                <Image class="shot" src={images.srcs[0]} alt={text.imageAlts[0] ?? ''} widths={[640, 983]} sizes="(max-width: 700px) 100vw, 640px" loading="lazy" />
-              )}
-              <ul>{text.bullets.map((b) => <li>{b}</li>)}</ul>
-              <Tags tags={project.tags.map((tag) => tagLabel(tag, lang))} />
-              {project.repo && (
-                <p class="repo"><a class="link" href={project.repo}>{t.work.sourceCode}</a></p>
-              )}
+          <article class="project reveal">
+            <div class="project-text">
+              <h2>
+                {project.name} <span class="kind">{text.kind}</span>
+              </h2>
+              <p class="summary">{text.summary}</p>
+              <ul class="stages">
+                {project.stages.map((stage, i) => (
+                  <li class:list={['stage', { pending: stage.inProgress }]} style={`--i:${i}`}>
+                    {t.stages[stage.id]}
+                    {stage.inProgress && ` · ${t.inProgress}`}
+                  </li>
+                ))}
+              </ul>
+              <ul class="highlights">{text.highlights.map((h) => <li>{h}</li>)}</ul>
+              <p class="stack">{project.stack.join(' · ')}</p>
+              {project.repo && <a class="link" href={project.repo}>{t.work.sourceCode}</a>}
             </div>
+            {images?.layout === 'phones' && (
+              <div class="phones">
+                {images.srcs.map((src, n) => (
+                  <Image src={src} alt={text.imageAlts[n] ?? ''} widths={[270, 540]} sizes="(max-width: 700px) 30vw, 180px" loading="lazy" />
+                ))}
+              </div>
+            )}
+            {images?.layout === 'wide' && images.srcs[0] && (
+              <Image class="shot" src={images.srcs[0]} alt={text.imageAlts[0] ?? ''} widths={[560, 983]} sizes="(max-width: 700px) 100vw, 560px" loading="lazy" />
+            )}
           </article>
         );
       })
     }
   </div>
 </section>
-
-<style>
-  .repo { margin:16px 0 0; }
-</style>

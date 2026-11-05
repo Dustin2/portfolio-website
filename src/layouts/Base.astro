@@ -27,7 +27,7 @@ const ogImage = new URL(`${base}og.png`, site).href;
     {langs.map((l) => <link rel="alternate" hreflang={l} href={pageUrl(l)} />)}
     <link rel="alternate" hreflang="x-default" href={pageUrl('en')} />
     <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
-    <meta name="theme-color" content="#07090f" />
+    <meta name="theme-color" content="#0a1324" />
     <!-- Link previews (LinkedIn, WhatsApp, Slack, X). Image URLs must be absolute. -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={pageUrl(lang)} />
@@ -39,8 +39,10 @@ const ogImage = new URL(`${base}og.png`, site).href;
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={t.meta.ogAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Entrance animations only hide content when JavaScript is there to reveal it again. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     {
       lang === 'en' && (
         // First visit from a Spanish-language browser: go to /es/. Once the visitor picks a language, respect it.
@@ -53,12 +55,12 @@ const ogImage = new URL(`${base}og.png`, site).href;
   <body>
     <nav>
       <div class="wrap">
-        <b>DG<span style="color:var(--accent)">.</span></b>
+        <a class="brand" href="#top">dustin.gallardo<span>/</span></a>
         <ul id="nav-links">
-          <li><a href="#about">{t.nav.about}</a></li>
-          <li><a href="#what">{t.nav.what}</a></li>
-          <li><a href="#career">{t.nav.career}</a></li>
           <li><a href="#work">{t.nav.work}</a></li>
+          <li><a href="#expertise">{t.nav.expertise}</a></li>
+          <li><a href="#experience">{t.nav.experience}</a></li>
+          <li><a href="#about">{t.nav.about}</a></li>
           <li><a href="#contact">{t.nav.contact}</a></li>
         </ul>
         <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links">{t.nav.menu}</button>

@@ -1,0 +1,24 @@
+---
+import { expertiseOrder } from '../data';
+import type { Content } from '../i18n';
+
+interface Props {
+  t: Content;
+}
+
+const { t } = Astro.props;
+---
+
+<section id="expertise" class="section wrap">
+  <p class="kicker reveal">{t.expertise.kicker}</p>
+  <div class="cells reveal">
+    {
+      expertiseOrder.map((id) => (
+        <div class="cell">
+          <h3>{t.expertise.areas[id].title}</h3>
+          <p>{t.expertise.areas[id].text}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -1,11 +1,14 @@
-// Page behavior: reveal on scroll, mobile menu, language choice, mouse light, typed role,
-// timeline progress, marquee and copy email. Every effect respects prefers-reduced-motion.
+// Page behavior: reveal on scroll, mobile menu, language choice, cursor light on the grid,
+// timeline progress and copy email. Every effect respects prefers-reduced-motion.
 
 const $ = <T extends Element>(selector: string) => document.querySelector<T>(selector);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Fade sections in as they enter the screen.
-const io = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.15 });
+// Fade sections in, and light up a project's stages, as they enter the screen.
+const io = new IntersectionObserver(
+  (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))),
+  { threshold: 0.15 },
+);
 document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
 // Remember the language the visitor picks, so the first-visit redirect never overrides it.
@@ -27,41 +30,33 @@ if (nav && menuBtn) {
   document.querySelectorAll('#nav-links a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
 }
 
-// Mouse light: the hero glow follows the cursor and cards get a spotlight. Mouse only, not touch.
-const follow = (el: HTMLElement, x: string, y: string) =>
-  el.addEventListener('pointermove', (e) => {
-    const r = el.getBoundingClientRect();
-    el.style.setProperty(x, `${e.clientX - r.left}px`);
-    el.style.setProperty(y, `${e.clientY - r.top}px`);
-  });
+// Cursor light: the grid brightens around the mouse. Mouse only, one update per frame.
 if (matchMedia('(pointer: fine)').matches && !reduced) {
-  const hero = $<HTMLElement>('.hero');
-  if (hero) follow(hero, '--mx', '--my');
-  document.querySelectorAll<HTMLElement>('.box').forEach((box) => follow(box, '--x', '--y'));
+  const root = document.documentElement;
+  let x = 0, y = 0, queued = false;
+  addEventListener('pointermove', (e) => {
+    x = e.clientX; y = e.clientY;
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      root.style.setProperty('--gx', `${x}px`);
+      root.style.setProperty('--gy', `${y}px`);
+      queued = false;
+    });
+  }, { passive: true });
 }
 
-// Typed role under the name; with reduced motion it just shows the first phrase.
-const typed = $<HTMLElement>('#typed');
-if (typed) {
-  const phrases: string[] = JSON.parse(typed.dataset.phrases ?? '[]');
-  if (reduced || phrases.length === 0) {
-    typed.textContent = phrases[0] ?? '';
-  } else {
-    let i = 0, n = 0, deleting = false;
-    const tick = () => {
-      const word = phrases[i % phrases.length] ?? '';
-      n += deleting ? -1 : 1;
-      typed.textContent = word.slice(0, n);
-      let wait = deleting ? 40 : 90;
-      if (!deleting && n >= word.length) { deleting = true; wait = 1600; }
-      else if (deleting && n <= 0) { deleting = false; i++; wait = 300; }
-      setTimeout(tick, wait);
-    };
-    tick();
-  }
+// 3D network behind the hero: only on large screens with a mouse, with motion allowed, and only
+// after the page has loaded, so three.js never delays the first paint. Everywhere else the grid stays.
+const hero = $<HTMLElement>('.hero');
+if (hero && !reduced && matchMedia('(pointer: fine) and (min-width: 1000px)').matches) {
+  const load = () => import('./hero3d').then((m) => m.mountHeroNetwork(hero, getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()));
+  const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(load) : setTimeout(load, 200));
+  if (document.readyState === 'complete') idle();
+  else addEventListener('load', idle, { once: true });
 }
 
-// Timeline: the line fills as the middle of the screen passes it, and each dot lights up.
+// Timeline: the line fills as the middle of the screen passes it, and each marker lights up.
 const timeline = $<HTMLElement>('.timeline');
 if (timeline) {
   const jobs = timeline.querySelectorAll('.job');
@@ -73,16 +68,6 @@ if (timeline) {
   addEventListener('scroll', fill, { passive: true });
   addEventListener('resize', fill);
   fill();
-}
-
-// Marquee needs the list twice to loop without a gap; the copy is hidden from screen readers.
-const stack = $<HTMLElement>('.marquee .stack');
-if (stack && !reduced) {
-  [...stack.children].forEach((s) => {
-    const copy = s.cloneNode(true) as HTMLElement;
-    copy.setAttribute('aria-hidden', 'true');
-    stack.append(copy);
-  });
 }
 
 // Copy email; if the clipboard is blocked, open the mail app instead.

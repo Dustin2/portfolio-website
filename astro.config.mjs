@@ -11,4 +11,8 @@ export default defineConfig({
     defaultLocale: 'en',
     routing: { prefixDefaultLocale: false },
   },
+  vite: {
+    // three.js (~530 KB, ~130 KB gzip) is its own chunk, loaded after the page on desktop only.
+    build: { chunkSizeWarningLimit: 600 },
+  },
 });

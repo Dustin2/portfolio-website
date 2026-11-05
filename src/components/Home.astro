@@ -4,9 +4,8 @@ import { content, type Lang } from '../i18n';
 import About from './About.astro';
 import Career from './Career.astro';
 import Contact from './Contact.astro';
+import Expertise from './Expertise.astro';
 import Hero from './Hero.astro';
-import Stack from './Stack.astro';
-import WhatIDo from './WhatIDo.astro';
 import Work from './Work.astro';
 
 interface Props {
@@ -19,10 +18,9 @@ const t = content[lang];
 
 <Base lang={lang}>
   <Hero t={t} />
-  <About t={t} />
-  <WhatIDo t={t} />
+  <Work t={t} />
+  <Expertise t={t} />
   <Career t={t} />
-  <Work t={t} lang={lang} />
-  <Stack t={t} />
+  <About t={t} />
   <Contact t={t} />
 </Base>
